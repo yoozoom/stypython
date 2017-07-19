@@ -1,0 +1,12 @@
+/bin/
+.idea/
+#project ignore
+.settings
+target
+.classpath
+.project
+.pydevproject
+.iml
+.iml
+src/main/webapp/logs
+
