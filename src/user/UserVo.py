@@ -1,4 +1,4 @@
-#coding=utf-8
+# -*- coding:utf-8 -*-
 class UserVo(object):
     # 新写法继承object可以获得object的自带属性和方法,且type为自己声明的类型
     # 老写法不继承object只有自己定义的属性和方法，且type为默认的instance类型
@@ -35,7 +35,10 @@ u.say();
 print dir(u);
 print type(u);
 print u.age;
+print u.__dict__
+print u.__doc__
 UserVo.say_hello();
+
 
 print "=================================================="
 
