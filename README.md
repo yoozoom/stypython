@@ -2,3 +2,4 @@
 
 
 - study for python
+- oop
