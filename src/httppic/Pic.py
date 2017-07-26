@@ -2,8 +2,7 @@
 # author yuzuo.yz 2017/7/25 21:23
 from urllib import urlencode
 
-from pip._vendor import requests
-from pip._vendor.requests.exceptions import RequestException
+import requests
 
 
 def get_html():
@@ -16,15 +15,18 @@ def get_html():
         'cur_tab': 3
     }
     url = 'https://www.toutiao.com/search_content/?' + urlencode(data)
-    try:
-        response = requests.get(url)
+    # try:
+    response = requests.get(url)
 
-        if response.status_code == 200:
-            return response.text
-        return None
-    except RequestException, e:
-        print "error!", e
-    return None
+    if response.status_code == 200:
+        # c = response.json()['count'] 可以直接获取json中的数据
+        # c = response.json()['count']
+        # print "test count", c
+        return response.text
+    response.text
+    # except , e:
+    #     print "error!", e
+    # return None
 
 
 def main():
@@ -33,4 +35,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main();
+    main()
