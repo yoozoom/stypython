@@ -13,7 +13,7 @@ a["a"] = "b"
 
 print a
 
-a2 = {"name": "juliy"}
+a2 = {"name" : "juliy"}
 a2["age"] = 22
 
 print a2
