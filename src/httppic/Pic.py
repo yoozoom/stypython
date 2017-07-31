@@ -68,6 +68,7 @@ def get_art_name_img(html):
     soup = BeautifulSoup(html, 'lxml')
     title = soup.select('title')[0].get_text()
     print title
+    # re正则表达式
     img_pattern = re.compile('var gallery = (.*?);', re.S)
     rs = re.search(img_pattern, html)
     if rs:
@@ -92,6 +93,7 @@ def get_img_content(url):
 def download_img(url):
     content = get_img_content(url)
     if content:
+        # md5转换，md5是hashlib包下
         file_name = md5(content).hexdigest() + ".jpg"
         if not os.path.exists(file_name):
             with open(file_name, 'wb') as f:
@@ -111,12 +113,6 @@ def main():
             if img_url:
                 print img_url
                 download_img(img_url)
-
-        # test method
-    # print build_url("http://www.baidu.com", "hello")
-    # test json
-    # test_str = '{"name":"kaka", "age": 10, "fav":{"name":"football","title":"play"}}'
-    # print print_json(test_str)
 
 
 if __name__ == '__main__':
