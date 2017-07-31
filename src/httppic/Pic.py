@@ -2,6 +2,7 @@
 # author yuzuo.yz 2017/7/25 21:23
 import re
 from hashlib import md5
+from multiprocessing import Pool
 from urllib import urlencode
 
 import os
@@ -10,14 +11,16 @@ import json
 
 from bs4 import BeautifulSoup
 
+import pic_config as config
+
 
 def get_html():
     data = {
-        'offset': 0,
+        'offset': config.PAGE_INDEX,
         'format': 'json',
-        'keyword': '黑丝诱惑',
+        'keyword': config.KEYWORDS,
         'autoload': 'true',
-        'count': 5,
+        'count': config.PAGE_SIZE,
         'cur_tab': 3
     }
     url = 'https://www.toutiao.com/search_content/'
@@ -94,15 +97,29 @@ def download_img(url):
     content = get_img_content(url)
     if content:
         # md5转换，md5是hashlib包下
-        file_name = md5(content).hexdigest() + ".jpg"
-        if not os.path.exists(file_name):
-            with open(file_name, 'wb') as f:
+        file_name = md5(url).hexdigest() + ".jpg"
+        local_name = config.DOWNLOAD_PATH + '/' + file_name
+        if not os.path.exists(local_name):
+            with open(local_name, 'wb') as f:
                 print "download..."
                 f.write(content)
 
 
 def print_json(data):
     return json.dumps(json.loads(data), indent=4)
+
+
+def test_print(i):
+    print i
+
+
+# 开启多进程
+def multi_exec(img_url):
+    p = Pool(4)
+    for i in range(4):
+        p.apply_async(download_img, (img_url,))
+    p.close()
+    p.join()
 
 
 def main():
@@ -113,6 +130,7 @@ def main():
             if img_url:
                 print img_url
                 download_img(img_url)
+
 
 
 if __name__ == '__main__':
