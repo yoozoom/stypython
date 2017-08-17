@@ -67,12 +67,29 @@ def get_art_url(html):
 def get_art_name_img(html):
     soup = BeautifulSoup(html, 'lxml')
 
-    p = soup.find_all('p', style='text-align: center;')
+    div = soup.find_all('div', class_='content_left')
+    img = soup.select("img[border='000']")
+    print img
+    if img:
+        a = img[0].parent
+        if a:
+            print a['href']
     # 多个需要再次处理
-    if len(p) == 1:
-        next_href = p[0].a['href']
-        img_url = p[0].a.img['src']
-        print next_href, img_url
+    # if len(p) == 1:
+    #     next_href = ''
+    #     img_url = ''
+    #     if p[0].a:
+    #         next_href = p[0].a['href']
+    #     if p[0].a and p[0].a.img:
+    #         img_url = p[0].a.img['src']
+    #
+    #     print next_href, img_url
+    #     if next_href and img_url:
+    #         next_href = pic_ishow_config.DOMAIN + next_href
+    #         img_url = pic_ishow_config.DOMAIN + img_url
+    #
+    #         print next_href, img_url
+    #         download_img(img_url)
 
 
 def get_img_content(url):
@@ -90,7 +107,7 @@ def download_img(url):
     if content:
         # md5转换，md5是hashlib包下
         file_name = md5(url).hexdigest() + ".jpg"
-        local_name = config.DOWNLOAD_PATH + '/' + file_name
+        local_name = pic_ishow_config.DOWNLOAD_PATH + '/' + file_name
         if not os.path.exists(local_name):
             with open(local_name, 'wb') as f:
                 print "download..."
