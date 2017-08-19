@@ -15,6 +15,7 @@ import pic_config as config
 import pic_ishow_config
 
 
+# 入口页面请求
 def get_html():
 
     index_param = ''
@@ -44,6 +45,7 @@ def build_url(url, endpoint):
     return "/".join([url, endpoint])
 
 
+# 请求详情页内容
 def get_art_detail(url):
     try:
         response = requests.get(url)
@@ -55,6 +57,7 @@ def get_art_detail(url):
         return None
 
 
+# 获取列表页面中进入详情页的地址集合
 def get_art_url(html):
     soup = BeautifulSoup(html, 'lxml')
     li_list = soup.find_all('li', class_='i_list list_n2')
@@ -64,34 +67,25 @@ def get_art_url(html):
         yield art_url
 
 
+# 获取详情页中的图片
 def get_art_name_img(html):
     soup = BeautifulSoup(html, 'lxml')
 
-    div = soup.find_all('div', class_='content_left')
     img = soup.select("img[border='000']")
-    print img
     if img:
+        origin_img_src = img[0]['src']
+        img_src = pic_ishow_config.DOMAIN + origin_img_src
+        download_img(img_src)
         a = img[0].parent
-        if a:
-            print a['href']
-    # 多个需要再次处理
-    # if len(p) == 1:
-    #     next_href = ''
-    #     img_url = ''
-    #     if p[0].a:
-    #         next_href = p[0].a['href']
-    #     if p[0].a and p[0].a.img:
-    #         img_url = p[0].a.img['src']
-    #
-    #     print next_href, img_url
-    #     if next_href and img_url:
-    #         next_href = pic_ishow_config.DOMAIN + next_href
-    #         img_url = pic_ishow_config.DOMAIN + img_url
-    #
-    #         print next_href, img_url
-    #         download_img(img_url)
+        if a and a.has_attr('href'):
+            origin_href = a['href']
+            if origin_href.endswith("html"):
+                next_href = pic_ishow_config.DOMAIN + origin_href
+                detail_html = get_art_detail(next_href)
+                get_art_name_img(detail_html)
 
 
+# 请求图片
 def get_img_content(url):
     try:
         response = requests.get(url)
@@ -102,6 +96,7 @@ def get_img_content(url):
         return None
 
 
+# 下载图片
 def download_img(url):
     content = get_img_content(url)
     if content:
@@ -123,17 +118,16 @@ def main():
     html = get_html()
     art_url_list = get_art_url(html)
     for art_url in art_url_list:
-        if i >= 5:
+        if i >= 20:
             break
+        # if i < 15:
+        #     i = i + 1
+        #     continue
         art_url = pic_ishow_config.DOMAIN + art_url
-        print art_url
+        print i, ":", art_url
         detail_html = get_art_detail(art_url)
         get_art_name_img(detail_html)
         i = i + 1
-    #     for img_url in get_art_name_img(detail_html):
-    #         if img_url:
-    #             print img_url
-    #             download_img(img_url)
 
 
 if __name__ == '__main__':
