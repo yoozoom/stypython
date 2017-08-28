@@ -3,6 +3,6 @@
 
 PAGE_INDEX = '3'
 
-DOWNLOAD_PATH = 'C:\Users\yuzuo.yz\Pictures\pic_ishow'
+DOWNLOAD_PATH = 'C:\Users\yuzuo.yz\Pictures\pic_aiss'
 
 DOMAIN = 'http://www.tuku.la'

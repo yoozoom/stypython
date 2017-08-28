@@ -28,7 +28,14 @@ def get_html():
     else:
         index_param = '_' + pic_ishow_config.PAGE_INDEX
 
-    url = 'http://www.tuku.la/taotu/IShow/index' + index_param + '.html'
+    # ishow
+    # url = 'http://www.tuku.la/taotu/IShow/index' + index_param + '.html'
+
+    # legbaby
+    # url = 'http://www.tuku.la/siwa/legbaby/index_2.html'
+
+    # aiss
+    url = 'http://www.tuku.la/siwa/aiss/index' + index_param + '.html'
 
     try:
         response = requests.get(url, headers=headers)
@@ -118,8 +125,8 @@ def main():
     html = get_html()
     art_url_list = get_art_url(html)
     for art_url in art_url_list:
-        if i >= 20:
-            break
+        # if i >= 5:
+        #     break
         # if i < 15:
         #     i = i + 1
         #     continue
