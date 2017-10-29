@@ -28,6 +28,7 @@ def get_html():
 
     try:
         response = requests.get(url, params=data)
+
         # response = requests.post(url, data=data) 使用post方式提交表单 application/x-www-form-urlencoded
         # response = requests.post(url, json=data) 使用ajax方式提交    application/json
 
@@ -125,7 +126,9 @@ def multi_exec(img_url):
 def main():
     html = get_html()
     for art_url in get_art(html):
+        print art_url
         detail_html = get_art_detail(art_url)
+
         for img_url in get_art_name_img(detail_html):
             if img_url:
                 print img_url
